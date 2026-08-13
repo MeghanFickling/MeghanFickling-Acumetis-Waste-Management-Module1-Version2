@@ -11,26 +11,47 @@ function markSection(name) {
   progressBar.style.width = ((count / totalSections) * 100) + "%";
 }
 
-const chainSteps = document.querySelectorAll(".chain-step");
+/* Build the environmental chain in order. */
+const chainSteps = Array.from(document.querySelectorAll(".chain-step"));
+const chainArrows = Array.from(document.querySelectorAll(".chain-arrow"));
 const chainCopy = document.getElementById("chainCopy");
-const exploredChain = new Set();
+let nextChainStep = 0;
+
+if (chainSteps[0]) {
+  chainSteps[0].classList.add("next-step");
+}
 
 chainSteps.forEach(function (step, index) {
   step.addEventListener("click", function () {
-    step.classList.add("explored");
-    chainCopy.textContent = step.dataset.copy;
-    exploredChain.add(index);
+    if (index !== nextChainStep) return;
 
-    if (exploredChain.size === chainSteps.length) {
+    step.classList.remove("next-step");
+    step.classList.add("explored");
+    step.disabled = true;
+    chainCopy.textContent = step.dataset.copy;
+
+    if (chainArrows[index]) {
+      chainArrows[index].classList.add("active");
+    }
+
+    nextChainStep += 1;
+
+    if (nextChainStep < chainSteps.length) {
+      chainSteps[nextChainStep].disabled = false;
+      chainSteps[nextChainStep].classList.add("next-step");
+    } else {
+      chainCopy.textContent = "Chain complete: manufacturing replacement materials contributes to greenhouse gas emissions.";
       markSection("environment");
     }
   });
 });
 
+/* Explore Air, Water, and Soil. */
 const earthHotspots = document.querySelectorAll(".earth-hotspot");
 const earthTitle = document.getElementById("earthInfoTitle");
 const earthText = document.getElementById("earthInfoText");
-const exploredHealth = new Set(["Air Pollution"]);
+const earthCompletion = document.getElementById("earthCompletion");
+const exploredHealth = new Set();
 
 earthHotspots.forEach(function (hotspot) {
   hotspot.addEventListener("click", function () {
@@ -38,30 +59,77 @@ earthHotspots.forEach(function (hotspot) {
       item.classList.remove("active");
     });
 
-    hotspot.classList.add("active");
+    hotspot.classList.add("active", "explored");
     earthTitle.textContent = hotspot.dataset.title;
     earthText.textContent = hotspot.dataset.text;
     exploredHealth.add(hotspot.dataset.title);
 
     if (exploredHealth.size === earthHotspots.length) {
+      earthCompletion.classList.add("visible");
       markSection("health");
     }
   });
 });
 
-const priorityPills = document.querySelectorAll(".priority-pill");
-const exploredPriorities = new Set();
+/* Reveal the healthcare and client story one step at a time. */
+const storyCards = Array.from(document.querySelectorAll(".industry-column"));
+const storyConnectors = Array.from(document.querySelectorAll(".story-connector"));
+const storyNext = document.getElementById("storyNext");
+const storyStatus = document.getElementById("storyStatus");
+let visibleStoryCards = 1;
 
-priorityPills.forEach(function (pill, index) {
-  pill.addEventListener("click", function () {
-    pill.classList.add("explored");
-    exploredPriorities.add(index);
+if (storyNext) {
+  storyNext.addEventListener("click", function () {
+    if (visibleStoryCards >= storyCards.length) return;
 
-    if (exploredPriorities.size === priorityPills.length) {
+    const connector = storyConnectors[visibleStoryCards - 1];
+    const nextCard = storyCards[visibleStoryCards];
+
+    if (connector) connector.classList.add("story-visible");
+    if (nextCard) nextCard.classList.add("story-visible");
+
+    visibleStoryCards += 1;
+
+    if (visibleStoryCards === 2) {
+      storyStatus.textContent = "Step 2 of 3: Client Expectations";
+      storyNext.textContent = "Continue to Acumetis Alignment →";
+    } else {
+      storyStatus.textContent = "Step 3 of 3: Acumetis Alignment";
+      storyNext.textContent = "Healthcare story complete ✓";
+      storyNext.disabled = true;
       markSection("industry");
     }
   });
-});
+}
+
+/* Gently reveal major content as it enters the viewport. */
+const revealTargets = document.querySelectorAll(
+  ".section .container > h2, .section-intro, .industry-intro, .impact-chain, .earth-explorer, .fact-feature, .industry-story, .client-conclusion, .summary-grid"
+);
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (reduceMotion || !("IntersectionObserver" in window)) {
+  revealTargets.forEach(function (item) {
+    item.classList.add("in-view");
+  });
+} else {
+  revealTargets.forEach(function (item) {
+    item.classList.add("scroll-reveal");
+  });
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealTargets.forEach(function (item) {
+    observer.observe(item);
+  });
+}
 
 const completeButton = document.getElementById("completeButton");
 const completeMessage = document.getElementById("completeMessage");
