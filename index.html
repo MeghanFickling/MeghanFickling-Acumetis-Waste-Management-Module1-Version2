@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Acumetis waste management training: why waste management matters.">
   <title>Why Waste Management Matters | Acumetis</title>
-  <link rel="stylesheet" href="styles.css?v=20260813-1">
+  <link rel="stylesheet" href="styles.css?v=20260813-2">
 </head>
 
 <body>
@@ -53,10 +53,11 @@
           useful materials are discarded unnecessarily.
         </p>
 
-        <div class="impact-chain">
+        <div class="impact-chain" aria-label="Environmental impact sequence">
           <button
             class="chain-step"
             type="button"
+            aria-label="Step 1 of 4: Landfill"
             data-copy="When waste is sent to landfill unnecessarily, valuable materials are lost."
           >
             <span class="chain-icon" aria-hidden="true">🗑️</span>
@@ -68,6 +69,8 @@
           <button
             class="chain-step"
             type="button"
+            aria-label="Step 2 of 4: Raw Materials"
+            disabled
             data-copy="Those materials must be replaced with new raw materials."
           >
             <span class="chain-icon" aria-hidden="true">⛏️</span>
@@ -79,6 +82,8 @@
           <button
             class="chain-step"
             type="button"
+            aria-label="Step 3 of 4: Extraction and Transport"
+            disabled
             data-copy="Extracting and transporting raw materials requires energy, water, and natural resources."
           >
             <span class="chain-icon" aria-hidden="true">🚛</span>
@@ -90,6 +95,8 @@
           <button
             class="chain-step"
             type="button"
+            aria-label="Step 4 of 4: Manufacturing"
+            disabled
             data-copy="Manufacturing replacement materials contributes to greenhouse gas emissions."
           >
             <span class="chain-icon" aria-hidden="true">🏭</span>
@@ -98,7 +105,7 @@
         </div>
 
         <div class="chain-copy" id="chainCopy" aria-live="polite">
-          Select a stage to see how unnecessary waste creates a chain of environmental impacts.
+          Begin with Landfill to build the environmental impact chain.
         </div>
 
       </div>
@@ -130,7 +137,7 @@
             
 
             <button
-              class="earth-hotspot hotspot-air active"
+              class="earth-hotspot hotspot-air"
               type="button"
               data-title="Air Pollution"
               data-text="When waste is burned improperly or decomposes in landfill, pollutants and greenhouse gases can be released into the air. These emissions can worsen local air quality and contribute to respiratory and cardiovascular health risks, especially for communities located near waste-handling facilities."
@@ -162,14 +169,14 @@
 
           <div class="earth-info-panel" aria-live="polite">
             <span class="panel-kicker">Pollution pathway</span>
-            <h3 id="earthInfoTitle">Air Pollution</h3>
+            <h3 id="earthInfoTitle">Explore the pollution pathways</h3>
             <p id="earthInfoText">
-              When waste is burned improperly or decomposes in landfill,
-              pollutants and greenhouse gases can be released into the air.
-              These emissions can worsen local air quality and contribute to
-              respiratory and cardiovascular health risks, especially for
-              communities located near waste-handling facilities.
+              Select Air, Water, and Soil on the Earth to learn how poorly
+              managed waste can affect environmental and human health.
             </p>
+            <div class="earth-completion" id="earthCompletion" role="status">
+              All three pollution pathways explored ✓
+            </div>
           </div>
         </div>
 
@@ -221,7 +228,7 @@
         </div>
 
         <div class="industry-story">
-          <article class="industry-column impact-column">
+          <article class="industry-column impact-column story-visible">
             <span class="story-step">1</span>
             <div class="story-icon" aria-hidden="true">🏭</div>
             <span class="story-label">Industry Footprint</span>
@@ -272,6 +279,13 @@
               <span>Questionnaires</span>
             </div>
           </article>
+        </div>
+
+        <div class="story-controls">
+          <p id="storyStatus" aria-live="polite">Step 1 of 3: Industry Footprint</p>
+          <button class="story-next" id="storyNext" type="button">
+            Continue to Client Expectations →
+          </button>
         </div>
 
         <p class="client-conclusion">
@@ -331,6 +345,6 @@
     </section>
   </main>
 
-  <script src="app.js?v=20260813-1"></script>
+  <script src="app.js?v=20260813-2"></script>
 </body>
 </html>
