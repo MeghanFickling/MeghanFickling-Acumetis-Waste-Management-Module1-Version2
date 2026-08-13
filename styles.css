@@ -784,6 +784,107 @@ h2 {
   .solution-band p { grid-column: auto; }
 }
 
+
+/* Guided interaction and scroll-reveal enhancements */
+.chain-step:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+  filter: grayscale(0.6);
+}
+
+.chain-step.next-step {
+  opacity: 1;
+  filter: none;
+  box-shadow: 0 0 0 4px rgba(46,205,220,0.22);
+  animation: guidedPulse 1.8s ease-in-out infinite;
+}
+
+.chain-arrow.active {
+  color: var(--electric-blue);
+  text-shadow: 0 0 14px rgba(46,205,220,0.7);
+}
+
+.earth-hotspot:not(.explored) {
+  animation: guidedPulse 1.8s ease-in-out infinite;
+}
+
+.earth-hotspot.explored {
+  box-shadow: 0 0 0 3px rgba(46,205,220,0.35);
+}
+
+.earth-completion {
+  display: none;
+  margin-top: 16px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  color: var(--dark-blue);
+  background: var(--electric-blue);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.earth-completion.visible { display: block; }
+
+.industry-column,
+.story-connector {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+
+.industry-column.story-visible,
+.story-connector.story-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.story-controls {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.story-controls p {
+  margin: 0;
+  color: #E8F0FF;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.story-next {
+  padding: 11px 17px;
+  cursor: pointer;
+  border: 0;
+  border-radius: 999px;
+  color: var(--dark-blue);
+  background: var(--electric-blue);
+  font-weight: 700;
+}
+
+.story-next:hover { background: var(--white); }
+.story-next:disabled { cursor: default; opacity: .75; }
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+
+.scroll-reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes guidedPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -791,6 +892,7 @@ h2 {
     scroll-behavior: auto !important;
     animation: none !important;
     transition: none !important;
+    transform: none !important;
   }
 }
 
